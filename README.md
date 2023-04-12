@@ -1,3 +1,5 @@
+![logo](/static/images/gigup-logo-wide.png)
+
 # GigUp Readme
 
 This readme goes through the basic features of the website, describes assumptions I had to take in regards to the specification and optional features that I included.
