@@ -1,0 +1,46 @@
+{% extends "main.html" %}
+{% block title %}Register{% endblock %}
+{% block script %}<script src='/static/js/register.js'></script>{% endblock %}
+
+{% include 'header.html' %}
+
+{% block content %}
+<div class="wrapper">
+	<div class="regcontainer">
+		<form action="registration" method="post" id="form" autocomplete="off">
+			<fieldset>
+				<legend><h2>Register</h2></legend>
+				<p>Please fill in this form to create an account.</p>
+				<hr>
+				<label for=email"></label>
+				<input type="email" placeholder="Enter your email..." name="email" id="email" required>
+				<br>
+				<label for="username"></label>
+				<input type="text" placeholder="Enter a username..." name="uname" id="uname" required>
+				<br>
+				<label for="passwd"></label>
+				<input type="password" placeholder="Choose a password..." name="passwd" id="passwd" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain at least one number, one uppercase and lowercase letter, and at least 8 characters" required>
+				<br>
+				<p>Organiser access</p>
+				<label for="orgpasswd"></label>
+				<input type="password" placeholder="Enter the organiser code..." name="orgpasswd" id="orgpasswd">
+				<hr>
+				<button type="submit" class="regbutton">Register</button>
+				<hr>
+				<p>Already have an account?</p>
+				<a href="{{ url_for('login') }}" class="signinbutton">Sign in</a>
+			</fieldset>
+		</form>
+	</div>
+
+	<div id="message">
+		<h3>Username must be:</h3>
+		<p id="unamelength" class="invalid">Between <b>3</b> and <b>20</b> characters</p>
+		<h3>Password must contain the following:</h3>
+		<p id="letter" class="invalid">A <b>lowercase</b> letter</p>
+		<p id="capital" class="invalid">A <b>capital (uppercase)</b> letter</p>
+		<p id="number" class="invalid">A <b>number</b></p>
+		<p id="length" class="invalid">Minimum <b>8 characters</b></p>
+	</div>
+</div>
+{% endblock %}

@@ -1,0 +1,119 @@
+{% extends "main.html" %}
+{% block title %}Events{% endblock %}
+
+{% include 'header.html' %}
+
+{% block content %}
+<div class="listcontainer">
+    <h2>Upcoming events</h2>
+    <hr>
+    {% for entry in new_events %}
+        <div class="eventcontainer">
+            <div class="eventwrapper">
+                <div>
+                    <div class="eventname">{{ entry.name }}</div>
+                    <hr>
+                    <div class="eventdate">{{ entry.date.strftime("%d %b, %Y, %H:%M") }} at {{ entry.location }}</div>
+                    <br>
+                    <div class="eventdesc"><i>{{ entry.description }}</i></div>
+                    <br>
+                    <div class="eventdur">Duration: {{ entry.duration }} minutes</div>
+                    {% if current_user.is_organiser == True %}
+                        <div class="eventcap">Capacity: {{ entry.capacity }}</div>
+                        <div class="eventcap">Remaining spaces: {{ entry.remaining }}</div>
+                    {% endif %}
+                    <br>
+                    {% if entry.is_near_full %}
+                        <h3>{{ entry.remaining }} ticket(s) left!</h3>
+                    {% endif %}
+                    {% if entry.is_full %}
+                        <h2 style="color: rgb(245, 124, 69)">FULL!</h2>
+                    {% endif %}
+                </div>
+                <div><img class="eventimage" src="static/events/{{ entry.image }}" alt="Event picture"></div>
+            </div>
+            {% if current_user.is_authenticated and current_user.is_confirmed %}
+                <div class="ticketwrapper">
+                    <!--If event has been booked by current user-->
+                    {% for event in booked_events %}
+                        {% if entry.id == event.id %}
+                            <form action="cancel_all_tickets" method="post" class="cancelform">
+                                <input type="hidden" value="{{entry.id}}" name="eventid">
+                                <input type="submit" class="cancelbutton" value="Cancel all tickets">
+                            </form>
+                            <div class="bookedbutton">Booked &check;</div>
+                        {% endif %}
+                    {% endfor %}
+                    {% if entry not in booked_events and entry.is_full == False %}
+                        <form action="book_ticket" method="post" class="bookform">
+                            {% if current_user.is_organiser == True or entry.capacity <= 5 %}
+                                <input type="number" name="ticketcount" class="ticketcount" min="1" max="{{entry.remaining}}">
+                            {% else %}
+                                <input type="number" name="ticketcount" class="ticketcount" min="1" max="5">
+                            {% endif %}
+                            <input type="hidden" value="{{entry.id}}" name="eventid">
+                            <input type="submit" class="bookbutton" value="Request a ticket">
+                        </form>
+                    {% endif %}
+                </div>
+            {% endif %}
+        </div>
+    {% else %}
+        <h4>No upcoming events.</h4>
+    {% endfor %}
+</div>
+<br>
+<div class="listcontainer">
+    <h2>Past events</h2>
+    <hr>
+    {% for entry in past_events %}
+        <div class="eventcontainer">
+            <div class="eventwrapper">
+                <div>
+                    <div class="eventname">{{ entry.name }}</div>
+                    <hr>
+                    <div class="eventdate">{{ entry.date.strftime("%d %b, %Y, %H:%M") }} at {{ entry.location }}</div>
+                    <br>
+                    <div class="eventdesc"><i>{{ entry.description }}</i></div>
+                    <br>
+                    <div class="eventdur">Duration: {{ entry.duration }} minutes</div>
+                    {% if current_user.is_organiser %}
+                        <div class="eventcap">Capacity: {{ entry.capacity }}</div>
+                    {% endif %}
+                </div>
+                <div><img class="eventimage" src="static/events/{{ entry.image }}" alt="Event picture"></div>
+            </div>
+        </div>
+    {% else %}
+        <h4>No non-cancelled past events.</h4>
+    {% endfor %}
+</div>
+<br>
+<div class="listcontainer">
+    <h2>Cancelled events</h2>
+    <hr>
+    {% for entry in cancelled_events %}
+        <div class="eventcontainer">
+            <h2 style="color: red">Cancelled!</h2>
+            <div class="eventwrapper">
+                <div>
+                    <div class="eventname">{{ entry.name }}</div>
+                    <hr>
+                    <div class="eventdate">{{ entry.date.strftime("%d %b, %Y, %H:%M") }} at {{ entry.location }}</div>
+                    <br>
+                    <div><i>{{ entry.description }}</i></div>
+                    <br>
+                    <div class="eventdur">Duration: {{ entry.duration }} minutes</div>
+                    {% if current_user.is_organiser == True %}
+                        <div class="eventcap">Capacity: {{ entry.capacity }}</div>
+                    {% endif %}
+                </div>
+                <div><img class="eventimage" src="static/events/{{ entry.image }}" alt="Event picture"></div>
+            </div>
+        </div>
+    {% else %}
+        <h4>No cancelled events.</h4>
+    {% endfor %}
+</div>
+<br>
+{% endblock %}

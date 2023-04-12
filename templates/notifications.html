@@ -1,0 +1,22 @@
+{% extends "main.html" %}
+{% block title %}Notifications{% endblock %}
+
+{% include 'header.html' %}
+
+{% block content %}
+<div class="listcontainer">
+    <h2>Notifications</h2>
+    <hr>
+    {% for notif in notifs %}
+        <div class="notifcontainer" id="{{notif.id}}">
+            <div class="notifuser"><h3>Admin</h3><br>
+                {{ notif.date.strftime("%d/%m/%Y, %H:%M") }}
+            </div>
+            <div class="notifmessage">{{ notif.message }}</div>
+            <span class="notifclose" onclick="closeNotif(this.parentNode.id)">&times;</span>
+        </div>
+    {% else %}
+        <h4>No new notifications.</h4>
+    {% endfor %}
+</div>
+{% endblock %}

@@ -1,0 +1,40 @@
+<header class="header">
+    <a href="{{ url_for('index') }}">
+        <div class="imageshadow">
+            <img src="/static/images/gigup-logo.png" alt="Website logo" width="50px" height="50px">
+        </div>
+    </a>
+    {% if current_user.is_authenticated %}
+    <div class="subheader">
+        <a href="{{ url_for('events') }}">Events</a>
+        <a href="{{ url_for('my_tickets') }}">My tickets</a>
+        {%if current_user.is_organiser %}
+            <a href="{{ url_for('my_events') }}">My events</a>
+            <a href="{{ url_for('add_event') }}">Add an event</a>
+        {% endif %}
+    </div>
+    <div class="rightsubheader">
+        <a href="{{url_for('notifications') }}">Notifications
+            {% if current_user.new_notifs() %}
+                ({{ current_user.new_notifs() }})
+            {% endif %}
+        </a>
+        <a class="accountheader" href="{{ url_for('my_account', username=current_user.username) }}"><b>{{current_user.username}}</b>
+            <img src="/static/avatars/{{current_user.avatar}}" class="headeravatar" width="20px" height="20px">
+        </a>
+    </div>
+    {% else %}
+    <div class="subheader">
+        <a href="{{ url_for('events') }}">Events</a>
+    </div>
+    <div class="rightsubheader">
+        <a href="{{ url_for('registration') }}"><b>Register</b></a>
+        <a href="{{ url_for('login') }}">Log in</a>
+    </div>
+    {% endif %}
+</header>
+<br>
+<br>
+<br>
+<br>
+<br>

@@ -1,0 +1,28 @@
+{% extends "main.html" %}
+{% block title %}Log in{% endblock %}
+
+{% include 'header.html' %}
+
+{% block content %}
+<form action="login" method="post">
+	<div class="logcontainer">
+		<fieldset>
+		<legend><h2>Log in</h2></legend>
+		<p style="font-size: 20px">Never miss an event again.</p>
+		<hr>
+		<label for="username"></label>
+		<input type="text" placeholder="Enter your username..." name="uname" id="uname" required>
+		<br>
+		<label for="passwd"></label>
+		<input type="password" placeholder="Enter your password..." name="passwd" id="passwd" required>
+		<br>
+		<button type="submit" class="regbutton">Sign in</button>
+		{% if error %}<div id="error">{{error}}</div>{% endif %}
+		<hr>
+        <a href="{{ url_for('forgot_password') }}" class="forgotbutton">Forgot password?</a>
+		<p style="margin-bottom: 2px;">Don't have an account?</p>
+		<a href="{{ url_for('registration') }}" class="signinbutton">Register</a>
+		</fieldset>
+	</div>
+</form>
+{% endblock %}

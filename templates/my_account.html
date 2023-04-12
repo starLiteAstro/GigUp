@@ -1,0 +1,59 @@
+{% extends "main.html" %}
+{% block title %}My account{% endblock %}
+{% block script %}<script src='/static/js/my_account.js'></script>{% endblock %}
+
+{% include 'header.html' %}
+
+{% block content %}
+<div class="settingscontainer">
+    <h2>Account settings</h2>
+    <hr>
+    <div class="accountwrapper">
+        <img src="/static/avatars/{{current_user.avatar}}" alt="User profile picture" width="200px" height="200px">
+        <div class="profile">
+        <div class="accountname"><b>{{current_user.username}}</b></div>
+        {% if current_user.is_organiser == True %}
+            <div style="color:rgb(255, 0, 0)"><h2>Organiser</h2></div>
+        {% else %}
+            <div style="color:rgb(234, 236, 72)"><h2 style="margin-top: 1px">Attendee</h2></div>
+        {% endif %}
+        </div>
+    </div>
+    <h3 style="margin-top: 10px;">Update profile picture</h3>
+    <form action="upload_avatar" method="post" enctype="multipart/form-data">
+        <input type="file" name="avatar" id="avatar">
+        <input type="submit" class="updatebutton" value="Update profile picture">
+    </form>
+    <h3>Email</h3>
+    <h4>{{current_user.email}}
+    {% if current_user.is_confirmed == True %}
+        <span style="color: lightgreen">(Verified)</span>
+    {% else %}
+        <span style="color: red">(Not verified)</span> <a class="updatebutton" style="border-radius: 4px" href="{{ url_for('resend_verify_email') }}">Resend verification</a>
+    {% endif %}
+    </h4>
+    <h3>Change username</h3>
+    <form action="update_name" id="updatename" method="post" accept-charset="utf-8">
+        <label for="username">
+            <input type="text" name="username" placeholder="Enter a new username..." id="username">
+            <input type="submit" value="Update username" class="updatebutton">
+        </label>
+    </form>
+    <br>
+    {% if message %}<p style="color:rgb(255, 96, 96)">{{ message }}</p>{% endif %}
+    <a href="{{ url_for('logout') }}" class="logoutbutton">Log out</a>
+    <button class="logoutbutton" onclick=openModal()>Delete account</button>
+    <div class="modal" id="deleteform">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="close" onclick="closeModal()">&times;</button>
+                <h3>Delete account</h3>
+            </div>
+            <div class="modal-body">Are you sure you want to delete your account? All of your data will be deleted.</div>
+            <form action="delete_user" class="delete-form-container">
+                <button type="submit" class="logoutbutton">Yes, I want to delete my account.</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

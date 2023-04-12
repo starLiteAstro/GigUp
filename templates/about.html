@@ -1,0 +1,21 @@
+{% extends "main.html" %}
+{% block title %}About us{% endblock %}
+
+{% include 'header.html' %}
+
+{% block content %}
+<div class="listcontainer">
+    <h2>About GigUp</h2>
+    <hr>
+    <p>GigUp is a Flask-based event management website. It allows users to join and manage events on Windows, macOS and Linux. The technology was produced with blood, sweat and tears by our great team at GUC.</p>
+    <div class="row">
+        <div class="column">
+            <br>
+            <div class="imageshadow">
+                <img src="/static/images/gigup-logo-wide.png" alt="Website logo" style="width:30%">
+            </div>
+            <p>The official logo of GigUp.</p>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>{% block title %}{% endblock %} - GigUp</title>
+        <link rel="stylesheet" href="/static/css/main.css"">
+		<script src='/static/js/jquery-3.6.3.min.js'></script>
+        <script src='/static/js/popups.js'></script>
+        {% block script %}{% endblock %}
+        <link rel="icon" type="image/x-icon" href="/static/images/gigup-favicon.png">
+    </head>
+    <body>
+    {% block header %}{% endblock %}
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for message in messages %}
+                    <div id="flash" class="flashes">
+                        <span class="flashclose" onclick="closeFlash()">&times;</span>
+                        <div>{{ message }}</div>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        {% block content %}{% endblock %}
+        <br>
+        <br>
+        {% include 'footer.html' %}
+    </body>
+</html>

@@ -1,0 +1,12 @@
+{% extends "main.html" %}
+{% block title %}500 Internal Server Error{% endblock %}
+
+{% include 'header.html' %}
+
+{% block content %}
+<div class="wrapper404">
+    <div class="text404">500 INTERNAL SERVER ERROR</div>
+    <img src="/static/images/500image.png" width="500px" height="500px" class="img404">
+    <a href="{{ url_for('index') }}" class="home404">Return to homepage</a>
+</div>
+{% endblock %}

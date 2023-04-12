@@ -1,0 +1,107 @@
+{% extends "main.html" %}
+{% block title %}Database{% endblock %}
+
+{% include 'header.html' %}
+
+{% block content %}
+<div class="listcontainer">
+	<h2 style="text-align: center; color: white;">"The Database"</h2>
+	<table>
+		<thead>
+			<tr>
+				<th width='200px'>All users</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for entry in users %}
+			<tr>
+				<td>{{entry.username}}</td>
+			</tr>
+			{% else %}
+			<tr>
+				<td>no entries</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+	
+	<table>
+		<thead>
+			<tr>
+				<th width='200px'>All events</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for entry in events %}
+			<tr>
+				<td>{{entry.name}}</td>
+			</tr>
+			{% else %}
+			<tr>
+				<td>no entries</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+
+	<table>
+		<thead>
+			<tr>
+				<th width='200px'>All event organisers</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for entry in eventorganisers %}
+			<tr>
+				<td>{{entry.user_id}}</td>
+				<td>{{entry.event_id}}</td>
+			</tr>
+			{% else %}
+			<tr>
+				<td>no entries</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+	
+	<table>
+		<thead>
+			<tr>
+				<th width='200px'>All tickets</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for entry in tickets %}
+			<tr>
+				<td>{{entry.id}}</td>
+			</tr>
+			{% else %}
+			<tr>
+				<td>no entries</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+
+	<table>
+		<thead>
+			<tr>
+				<th width='200px'>All notifs</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for entry in notifs %}
+			<tr>
+				<td>{{entry.id}}</td>
+				<td>{{entry.message}}</td>
+			</tr>
+			{% else %}
+			<tr>
+				<td>no entries</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+	<br>
+</div>
+{% endblock %}

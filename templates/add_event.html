@@ -1,0 +1,58 @@
+{% extends "main.html" %}
+{% block title %}Add an event{% endblock %}
+{% block script %}<script src='/static/js/add_event.js'></script>{% endblock %}
+
+{% include 'header.html' %}
+
+{% block content %}
+<div class="listcontainer">
+    <form action="add_event" enctype="multipart/form-data" method="post" id="addeventform" autocomplete="off">
+        <fieldset>
+            <legend><h2>Add an event</h2></legend>
+            <div>* = Required</div>
+            <hr>
+            <label for="name">Name *</label>
+            <input type="text" placeholder="Enter a name for the event..." name="name" id="name" min="1" max="500" required>
+            <br>
+            <label for="date">Date and time *</label>
+		    <input type="datetime-local" placeholder="Choose a date and time..." name="date" id="date" min="1970-01-01T00:00" max="2999-12-31T23:59" required>
+            <br>
+            <label for="description">Description</label>
+		    <textarea placeholder="Add an event description (max. 2000 characters)..." name="description" id="description" maxlength="2000" cols="50" rows="5"></textarea>
+            <br>
+            <label for="durationh">Duration (hours)</label>
+		    <input type="number" placeholder="Enter the duration (hours) of the event (max. 9999 hours)..." name="durationhours" id="durationhours" min="1" max="9999">
+            <label for="durationm">Duration (minutes) (If nothing is entered, this is set to 0)</label>
+            <input type="number" placeholder="Enter the duration (minutes) of the event..." name="durationmins" id="durationmins" min="1" max="59">
+            <br>
+            <label for="capacity">Capacity *</label>
+		    <input type="number" placeholder="Enter the maximum capacity of the event (min. 5, max. 99999)..." name="capacity" id="capacity" min="5" max="99999" required>
+            <br>
+            <label for="location">Location *</label>
+		    <input type="text" placeholder="Enter the location of the event (max. 1000 characters)..." name="location" id="location" min="1" max="1000" required>
+            <br>
+            <label for="image">Image</label>
+		    <input type="file" placeholder="Upload an image of the event..." name="image" id="image" accept="image/*">
+            <label for="organisers">Add organisers</label>
+            <div class="orgwrapper">
+                <div class="orgchildwrapper">
+                    <img src="/static/avatars/{{current_user.avatar}}" width="20px" height="20px" class="round">
+                    <div style="height: 20px;">{{ current_user.username }} (Event creator)</div>
+                </div>
+                {% for user in users %}
+                <div class="orgchildwrapper">
+                    <input type="checkbox" value="{{user.id}}" name="extraorgs">
+                    <img src="/static/avatars/{{user.avatar}}" width="20px" height="20px">
+                    <div>{{ user.username }}</div>
+                </div>
+                {% endfor %}
+            </div>
+            <div class="wrapper404">
+                <button type="submit" class="regbutton">Add event</button>
+                <button type="reset" class="resetbutton">Reset</button>
+            </div>
+        </fieldset>
+    </form>
+</div>
+<br>
+{% endblock %}

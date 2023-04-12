@@ -1,0 +1,12 @@
+{% extends "main.html" %}
+{% block title %}403 Forbidden{% endblock %}
+
+{% include 'header.html' %}
+
+{% block content %}
+<div class="wrapper404">
+    <div class="text404">403 FORBIDDEN</div>
+    <img src="/static/images/403image.png" width="500px" height="500px" class="img404">
+    <a href="{{ url_for('index') }}" class="home404">Return to homepage</a>
+</div>
+{% endblock %}

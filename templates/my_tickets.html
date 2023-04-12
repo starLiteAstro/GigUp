@@ -1,0 +1,115 @@
+{% extends "main.html" %}
+{% block title %}My tickets{% endblock %}
+
+{% include 'header.html' %}
+
+{% block content %}
+<div class="listcontainer">
+    <h2>My tickets</h2>
+    <hr>
+    {% for ticket in new_tickets %}
+        {% for event in events %}
+            {% if ticket.event_id == event.id %}
+                <div class="ticketcontainer" id="{{ticket.id}}">
+                    <div class="eventwrapper">
+                        <div>
+                            Booked by {{ current_user.username }} on {{ ticket.created_at.strftime("%d/%m/%Y, %H:%M") }}
+                            <div class="eventname">{{ event.name }}</div>
+                            <hr>
+                            <div class="eventdate">{{ event.date.strftime("%d %b, %Y, %H:%M") }} at {{ event.location }}</div>
+                            <br>
+                            <div class="eventdesc"><i>{{ event.description }}</i></div>
+                            <br>
+                            <div class="eventdur">Duration: {{ event.duration }} minutes</div>
+                            {% if current_user.is_organiser == True %}
+                                <div class="eventcap">Capacity: {{ event.capacity }}</div>
+                            {% endif %}
+                            <form action="cancel_ticket" method="post" class="buttonform">
+                                <input type="hidden" value="{{event.id}}" name="eventid">
+                                <input type="submit" class="cancelbutton" value="Cancel this ticket">
+                            </form>
+                        </div>
+                        <div class="ticketimgs">
+                            <img class="eventimage" src="static/events/{{ event.image }}" alt="Event picture" height="100px">
+                            <img class="eventimage" src="static/barcodes/{{ ticket.id }}.svg" height="100px">
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+        {% endfor %}
+    {% else %}
+        <h4>No booked tickets.</h4>
+        <a href="{{ url_for('events') }}" class="updatebutton">Book a ticket</a>
+    {% endfor %}
+</div>
+<br>
+<div class="listcontainer">
+    <h2>Expired tickets</h2>
+    <hr>
+    {% for ticket in past_tickets %}
+        {% for event in events %}
+            {% if ticket.event_id == event.id %}
+            <div class="ticketcontainer" id="{{ticket.id}}">
+                <h2 style="color: red">Expired!</h2>
+                <div class="eventwrapper">
+                    <div>
+                        Booked on {{ event.created_at.strftime("%d/%m/%Y, %H:%M") }}
+                        <div class="eventname">{{ event.name }}</div>
+                        <hr>
+                        <div class="eventdate">{{ event.date.strftime("%d %b, %Y, %H:%M") }} at {{ event.location }}</div>
+                        <br>
+                        <div class="eventdesc"><i>{{ event.description }}</i></div>
+                        <br>
+                        <div class="eventdur">Duration: {{ event.duration }} minutes</div>
+                        {% if current_user.is_organiser == True %}
+                            <div class="eventcap">Capacity: {{ event.capacity }}</div>
+                        {% endif %}
+                    </div>
+                    <div class="ticketimgs">
+                        <img class="eventimage" src="static/events/{{ event.image }}" alt="Event picture" height="100px">
+                        <img class="eventimage" src="static/barcodes/{{ ticket.id }}.svg" height="100px">
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        {% endfor %}
+    {% else %}
+        <h3>No expired tickets.</h3>
+    {% endfor %}
+</div>
+<br>
+<div class="listcontainer">
+    <h2>Cancelled tickets</h2>
+    <hr>
+    {% for ticket in cancelled_tickets %}
+        {% for event in events %}
+            {% if ticket.event_id == event.id %}
+            <div class="ticketcontainer" id="{{ticket.id}}">
+                <h2 style="color: red">Cancelled!</h2>
+                <div class="eventwrapper">
+                    <div>
+                        Booked on {{ event.created_at.strftime("%d/%m/%Y, %H:%M") }}
+                        <div class="eventname">{{ event.name }}</div>
+                        <hr>
+                        <div class="eventdate">{{ event.date.strftime("%d %b, %Y, %H:%M") }} at {{ event.location }}</div>
+                        <br>
+                        <div class="eventdesc"><i>{{ event.description }}</i></div>
+                        <br>
+                        <div class="eventdur">Duration: {{ event.duration }} minutes</div>
+                        {% if current_user.is_organiser == True %}
+                            <div class="eventcap">Capacity: {{ event.capacity }}</div>
+                        {% endif %}
+                    </div>
+                    <div class="ticketimgs">
+                        <img class="eventimage" src="static/events/{{ event.image }}" alt="Event picture" height="100px">
+                        <img class="eventimage" src="static/barcodes/{{ ticket.id }}.svg" height="100px">
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        {% endfor %}
+    {% else %}
+        <h3>No cancelled tickets.</h3>
+    {% endfor %}
+</div>
+{% endblock %}

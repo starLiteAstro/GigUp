@@ -1,0 +1,42 @@
+{% extends "main.html" %}
+{% block title %}My events{% endblock %}
+
+{% include 'header.html' %}
+
+{% block content %}
+<div class="listcontainer">
+    <h2>My events</h1>
+    <hr>
+    {% for entry in events %}
+    <div class="eventcontainer" id="{{entry.id}}">
+        <div class="eventdate">Date of creation: {{ entry.created_at.strftime("%d %b, %Y, %H:%M") }}</div>
+        {% if entry.is_cancelled %}
+            <h2 style="color: red">Cancelled!</h2>
+        {% endif %}
+        <div class="eventwrapper">
+            <div>
+                <div class="eventname">{{ entry.name }}</div>
+                <hr>
+                <div class="eventdate">{{ entry.date.strftime("%d %b, %Y, %H:%M") }} at {{ entry.location }}</div>
+                <br>
+                <div class="eventdesc"><i>{{ entry.description }}</i></div>
+                <br>
+                <div class="eventdur">Duration: {{ entry.duration }} minutes</div>
+                <div class="eventcap">Capacity: {{ entry.capacity }}</div>
+            </div>
+            <div><img class="eventimage" src="static/events/{{ entry.image }}" alt="Event picture" height="200px"></div>
+        </div>
+        {% if entry.is_cancelled == False %}
+        <form action="load_manage_event" method="post" style="margin-bottom: 0px">
+            <input type="hidden" value="{{entry.id}}" name="eventid">
+            <input type="submit" class="managebutton" href="{{ url_for('manage_event', event=entry.id) }}" value="Manage event">
+        </form>
+        {% endif %}
+    </div>
+    {% else %}
+        <h4>No created events.</h4>
+        <a href="{{ url_for('add_event') }}" class="updatebutton">Add an event</a>
+    {% endfor %}
+</div>
+<br>
+{% endblock %}

@@ -1,0 +1,78 @@
+{% extends "main.html" %}
+{% block title %}Editing {{ event.name }}{% endblock %}
+{% block script %}<script src='/static/js/add_event.js'></script>{% endblock %}
+
+{% include 'header.html' %}
+
+{% block content %}
+<div class="listcontainer">
+    <form action="manage_event" enctype="multipart/form-data" method="post" id="addeventform" autocomplete="off">
+        <fieldset>
+            <legend><h2>Edit {{event.name}}</h2></legend>
+            <div>* = Required</div>
+            <hr>
+            <label for="name">Name *</label>
+            <input type="text" placeholder="Enter a name for the event..." name="name" id="name" min="1" max="500" value={{event.name}} required>
+            <br>
+            <label for="date">Date and time *</label>
+		    <input type="datetime-local" placeholder="Choose a date and time..." name="date" id="date" min="1970-01-01T00:00" max="2999-12-31T23:59" value="{{event.date}}" disabled="disabled">
+            <br>
+            <label for="description">Description</label>
+		    <textarea placeholder="Add an event description (max. 2000 characters)..." name="description" id="description" maxlength="2000" cols="50" rows="5">{{event.description}}</textarea>
+            <br>
+            <label for="durationh">Duration (hours)</label>
+		    <input type="number" placeholder="Enter the duration (hours) of the event (max. 9999)..." name="durationhours" id="durationhours" min="1" max="9999" value="{{event.duration // 60}}">
+            <label for="durationm">Duration (minutes) (If nothing is entered, this is set to 0)</label>
+            <input type="number" placeholder="Enter the duration (minutes) of the event..." name="durationmins" id="durationmins" min="1" max="59" value="{{event.duration % 60}}">
+            <br>
+            <label for="capacity">Capacity *</label>
+            {% if booked_tickets <= 4 %}
+            <input type="number" placeholder="Enter the maximum capacity of the event (min. 5, max. 99999)..." name="capacity" id="capacity" min="5" max="99999" value="{{event.capacity}}" required>
+            {% else %}
+            <input type="number" placeholder="Enter the maximum capacity of the event (min. {{event.capacity - event.remaining}}, max. 99999)..." name="capacity" id="capacity" min="{{event.capacity - event.remaining}}" max="99999" value="{{event.capacity}}" required>
+            {% endif %}
+            <br>
+            <label for="location">Location *</label>
+		    <input type="text" placeholder="Enter the location of the event (max. 1000 characters)..." name="location" id="location" min="1" max="1000" value="{{event.location}}" required>
+            <br>
+            <label for="image">Image</label>
+		    <input type="file" name="image" id="image" accept="image/*">
+            <label for="organisers">Add organisers</label>
+            <div class="orgwrapper">
+                <div class="orgchildwrapper">
+                    <img src="/static/avatars/{{event_creator.avatar}}" width="20px" height="20px" class="round">
+                    <div style="height: 20px;">{{ event_creator.username }} (Event creator)</div>
+                </div>
+                {% for organiser in event_organisers %}
+                <div class="orgchildwrapper">
+                    <img src="/static/avatars/{{organiser.avatar}}" width="20px" height="20px" class="round">
+                    <div style="height: 20px;">{{ organiser.username }}</div>
+                </div>
+                {% endfor %}
+            </div>
+            <div class="orgwrapper">
+                {% for organiser in non_event_organisers %}
+                <div class="orgchildwrapper">
+                    <input type="checkbox" value="{{organiser.id}}" name="extraorgs">
+                    <img src="/static/avatars/{{organiser.avatar}}" width="20px" height="20px">
+                    <div>{{ organiser.username }}</div>
+                </div>
+                {% endfor %}
+            </div>
+            <input type="hidden" value="{{event.id}}" name="eventid">
+            <button type="submit" class="regbutton">Update event</button>
+        </fieldset>
+    </form>
+
+    <form action="cancel_event" method="post" id="cancelevent">
+        <fieldset>
+            <legend><h2>Cancel {{event.name}}</h2></legend>
+            <div>WARNING: Cancelling this event will notify all attendees of its cancellation.</div>
+            <textarea placeholder="State the reason for cancellation (max. 2000 characters)..." name="description" id="description" minlength="3" maxlength="2000" cols="50" rows="5" required></textarea>
+            <br>
+            <input type="hidden" value="{{event.id}}" name="eventid">
+            <button type="submit" class="logoutbutton">Cancel event</button>
+        </fieldset>
+    </form>
+</div>
+{% endblock %}
